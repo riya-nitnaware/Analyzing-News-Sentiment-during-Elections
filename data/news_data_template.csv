@@ -1,0 +1,4 @@
+id,country,election_year,date,headline,article_summary,sentiment,source_type,source_reference,language,text
+1,CountryA,2024,2024-01-01,Sample Headline,Sample article summary,Positive,Sample Source,Sample Reference,English,This is a sample positive news article about the election.
+2,CountryB,2024,2024-01-02,Another Headline,Another summary,Negative,Sample Source,Sample Reference,English,This is a sample negative news article about the election.
+3,CountryC,2024,2024-01-03,Neutral Headline,Neutral summary,Neutral,Sample Source,Sample Reference,English,This is a sample neutral news article discussing election procedures.

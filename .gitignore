@@ -1,0 +1,47 @@
+# Virtual Environments
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Python Cache & Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Log Files
+*.log
+logs/
+
+# Secrets & Environment Variables
+.env
+.env.*
+.streamlit/secrets.toml
+
+# IDE & Editor Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.settings/
+
+# OS Generated Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary Files
+scratch/
+*.tmp
+*.temp
+
+.streamlit/config.toml
+
+data/history.json
+data/users.json

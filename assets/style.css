@@ -1,0 +1,75 @@
+/* Custom CSS to make Streamlit look like a modern SaaS app */
+
+/* Hide default Streamlit elements */
+#MainMenu {visibility: hidden;}
+header {visibility: hidden;}
+footer {visibility: hidden;}
+
+/* Custom Cards */
+div[data-testid="stMetric"] {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    transition: transform 0.2s ease-in-out;
+}
+
+div[data-testid="stMetric"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Custom Buttons */
+div.stButton > button:first-child {
+    background-color: #1e3a8a;
+    color: white;
+    border-radius: 8px;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    transition: all 0.2s;
+}
+
+div.stButton > button:first-child:hover {
+    background-color: #1e40af;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Form Styling */
+div[data-testid="stForm"] {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+/* Inputs */
+.stTextInput > div > div > input, .stTextArea > div > div > textarea {
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+}
+
+.stTextInput > div > div > input:focus, .stTextArea > div > div > textarea:focus {
+    border-color: #1e3a8a;
+    box-shadow: 0 0 0 1px #1e3a8a;
+}
+
+/* Sidebar */
+[data-testid="stSidebar"] {
+    background-color: #f1f5f9;
+    border-right: 1px solid #e2e8f0;
+}
+
+[data-testid="stSidebar"] hr {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border-top: 1px solid #cbd5e1;
+}
+
+/* Title colors */
+h1, h2, h3 {
+    color: #0f172a;
+}
