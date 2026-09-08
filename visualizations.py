@@ -92,3 +92,101 @@ def generate_wordcloud(text_series, title="Most Common Words"):
     plt.tight_layout(pad=0)
     
     return fig
+
+def plot_statistical_bar_chart(df):
+    """
+    Generates a bar chart showing article count for Positive, Negative, and Neutral categories.
+    """
+    categories = ['Positive', 'Negative', 'Neutral']
+    counts = [int((df['sentiment'] == cat).sum()) for cat in categories]
+    
+    stat_df = pd.DataFrame({
+        'Sentiment Category': categories,
+        'No. of Articles': counts
+    })
+    
+    color_map = {'Positive': '#22c55e', 'Negative': '#ef4444', 'Neutral': '#94a3b8'}
+    
+    fig = px.bar(
+        stat_df,
+        x='Sentiment Category',
+        y='No. of Articles',
+        color='Sentiment Category',
+        color_discrete_map=color_map,
+        text='No. of Articles',
+        title='Sentiment Distribution (Dataset)'
+    )
+    
+    fig.update_traces(
+        textposition='outside',
+        textfont_size=13,
+        textfont_color='#0f172a'
+    )
+    
+    fig.update_layout(
+        xaxis_title="Sentiment Category",
+        yaxis_title="No. of Articles",
+        showlegend=False,
+        margin=dict(t=50, b=40, l=40, r=20),
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        font=dict(family="sans serif", color="#0f172a", size=12),
+        height=380
+    )
+    return fig
+
+def plot_statistical_donut_chart(df):
+    """
+    Generates a donut chart showing sentiment percentage breakdown for the dataset.
+    """
+    categories = ['Positive', 'Negative', 'Neutral']
+    counts = [int((df['sentiment'] == cat).sum()) for cat in categories]
+    total = sum(counts) if sum(counts) > 0 else 1
+    
+    pcts = [round((c / total) * 100, 1) for c in counts]
+    labels_with_pct = [f"{cat} ({p}%)" for cat, p in zip(categories, pcts)]
+    
+    stat_df = pd.DataFrame({
+        'Sentiment': categories,
+        'Count': counts,
+        'Percentage': pcts,
+        'LegendLabel': labels_with_pct
+    })
+    
+    color_map = {
+        'Positive': '#22c55e',
+        'Negative': '#ef4444',
+        'Neutral': '#94a3b8'
+    }
+    
+    fig = px.pie(
+        stat_df,
+        values='Count',
+        names='LegendLabel',
+        color='Sentiment',
+        color_discrete_map=color_map,
+        hole=0.55,
+        title='Sentiment Percentage'
+    )
+    
+    fig.update_traces(
+        textinfo='percent+label',
+        hovertemplate='%{label}<br>Count: %{value}<extra></extra>'
+    )
+    
+    fig.update_layout(
+        margin=dict(t=50, b=40, l=20, r=20),
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        font=dict(family="sans serif", color="#0f172a", size=12),
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=-0.2,
+            xanchor="center",
+            x=0.5
+        ),
+        height=380
+    )
+    return fig
+

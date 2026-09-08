@@ -36,7 +36,7 @@ try:
     from nlp_model import train_model, predict_sentiment
     from history_manager import save_analysis, get_user_history, delete_analysis
     from pdf_generator import generate_pdf_report
-    from visualizations import plot_sentiment_distribution, plot_sentiment_trend
+    from visualizations import plot_sentiment_distribution, plot_sentiment_trend, plot_statistical_bar_chart, plot_statistical_donut_chart
 except Exception as _import_err:
     logger.exception("Critical import error")
     st.error("The application failed to start. Please contact support.")
@@ -194,7 +194,7 @@ def _render_page(vectorizer, model, df, metrics):
         if page == "Dashboard":
             _render_dashboard()
         elif page == "Analyze News":
-            _render_analyze_news(vectorizer, model)
+            _render_analyze_news(vectorizer, model, df)
         elif page == "Analysis Dashboard":
             _render_analysis_dashboard()
         elif page == "Analysis History":
@@ -341,10 +341,10 @@ def _render_dashboard():
 # ──────────────────────────────────────────────────────────────────────────────
 # Analyze News + Result
 # ──────────────────────────────────────────────────────────────────────────────
-def _render_analyze_news(vectorizer, model):
+def _render_analyze_news(vectorizer, model, df=None):
     # If we already have a pending result, show it
     if st.session_state.get("analysis_result"):
-        _render_sentiment_result()
+        _render_sentiment_result(df)
         return
 
     st.title("Analyze Election News")
@@ -410,7 +410,13 @@ def _render_analyze_news(vectorizer, model):
                 st.error("⚠️ Unable to analyze this news article. Please try again.")
 
 
-def _render_sentiment_result():
+def _render_sentiment_result(df=None):
+    if df is None and os.path.exists(DATA_PATH):
+        try:
+            df = pd.read_csv(DATA_PATH)
+        except Exception:
+            logger.exception("Failed to load DATA_PATH in _render_sentiment_result")
+
     result = st.session_state["analysis_result"]
     if not result:
         return
@@ -466,6 +472,38 @@ def _render_sentiment_result():
             st.markdown(bar_html, unsafe_allow_html=True)
 
     st.markdown("---")
+
+    # ── NEW STATISTICAL SENTIMENT ANALYSIS SECTION ─────────────────────────────
+    if df is not None and len(df) > 0:
+        st.markdown(
+            "<div style='background:white; border:1px solid #e2e8f0; border-radius:12px; "
+            "padding:24px; margin-bottom:24px; box-shadow:0 1px 3px rgba(0,0,0,0.05);'>"
+            "<h2 style='color:#1e3a8a; margin-top:0; margin-bottom:20px;'>Statistical Sentiment Analysis</h2>",
+            unsafe_allow_html=True
+        )
+        
+        col_chart1, col_chart2 = st.columns(2)
+        with col_chart1:
+            try:
+                fig_bar = plot_statistical_bar_chart(df)
+                st.plotly_chart(fig_bar, use_container_width=True)
+            except Exception:
+                logger.exception("Error rendering statistical bar chart")
+                st.error("Unable to load bar chart visualization.")
+
+        with col_chart2:
+            try:
+                fig_donut = plot_statistical_donut_chart(df)
+                st.plotly_chart(fig_donut, use_container_width=True)
+            except Exception:
+                logger.exception("Error rendering statistical donut chart")
+                st.error("Unable to load donut chart visualization.")
+
+        st.info("The above graph represents the overall distribution of Positive, Negative, and Neutral sentiments in the election news dataset.")
+        st.markdown("</div>", unsafe_allow_html=True)
+
+        st.markdown("---")
+
 
     # ── Input text section ─────────────────────────────────────────────────────
     st.markdown("### News Analyzed")
