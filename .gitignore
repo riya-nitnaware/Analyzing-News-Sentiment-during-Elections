@@ -41,7 +41,6 @@ scratch/
 *.tmp
 *.temp
 
-.streamlit/config.toml
 
 data/history.json
 data/users.json
